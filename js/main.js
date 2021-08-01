@@ -1,4 +1,4 @@
-const DEFAULT_TIME = 1 * 60 * 1000; // minutes
+const DEFAULT_TIME = 20 * 60 * 1000; // minutes
 const COOLDOWN_TIME = 50 * 1000;
 
 let time = 0;
@@ -7,6 +7,19 @@ let t0;
 let timer_element;
 let ctrl_button;
 let interval_id;
+
+let alarm_sound = new Howl({
+    src: ['sfx/alarm.wav'],
+    volume: 1.5,
+    rate: .7,
+    loop: true
+});
+let cooldown_sound = new Howl({
+    src: ['sfx/cooldown.wav'],
+    rate: .1,
+    volume: .5,
+    loop: true
+});
 
 function pad_digit(t) {
     return t < 10 ? `0${t}` : `${t}`
@@ -19,8 +32,6 @@ function time_string(t) {
 function update_text(t) {
     timer_element.innerText = time_string(t);
 }
-
-// -------- STATE MACHINE --------
 
 class State {
     constructor({enter, exit, button_label, text_class}) {
@@ -65,10 +76,10 @@ const PAUSED = new State({
 const ALARM = new State({
     enter: () => {
         time = 0;
-        // TODO start playing sound
+        alarm_sound.play();
     },
     exit: () => {
-        // TODO stop playing sound
+        alarm_sound.stop();
     },
     text_class: 'alarm',
     button_label: 'Snooze'
@@ -76,10 +87,12 @@ const ALARM = new State({
 const COOLDOWN = new State({
     enter: () => {
         ctrl_button.disabled = true;
+        cooldown_sound.play();
         start(COOLDOWN_TIME);
     },
     exit: () => {
         clearInterval(interval_id);
+        cooldown_sound.stop();
         ctrl_button.disabled = false;
     },
     button_label: 'Come back soon!'
