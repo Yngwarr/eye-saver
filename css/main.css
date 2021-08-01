@@ -18,11 +18,21 @@ body * {
 	font-family: IBM;
 }
 
+main {
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
 h1 {
 	font-size: 2.4rem;
 	color: #000;
 	text-align: center;
-	margin-top: 1.2rem;
 }
 
 a {
@@ -32,4 +42,27 @@ a {
 
 a:hover {
 	text-shadow: 2px 2px #ccc;
+}
+
+#timer {
+    font-size: 7.2rem;
+    margin-bottom: 1rem;
+}
+
+.alarm {
+    animation: blink 1s infinite;
+    color: #f00;
+}
+
+.pause {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
