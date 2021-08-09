@@ -10,7 +10,7 @@ let interval_id;
 
 let alarm_sound = new Howl({
     src: ['sfx/alarm.wav'],
-    volume: 1.5,
+    volume: 1.1,
     rate: .7,
     loop: true
 });
